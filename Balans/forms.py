@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from .models import Profile
-from django.forms import ModelForm, TextInput
+from django.forms import ModelForm, TextInput, ModelMultipleChoiceField, ChoiceField
 from .models import  City
 
 class Userregistarions(UserCreationForm):
@@ -19,3 +19,11 @@ class CityForm(ModelForm):
         widgets = {
             'name': TextInput(attrs={'class': 'input', 'placeholder': 'City Name'}),
         }
+class ChoiseCity(ModelForm):
+    name = ModelMultipleChoiceField(queryset=City.objects.all())
+
+    class Meta:
+        model = City
+        fields = ['name']
+
+

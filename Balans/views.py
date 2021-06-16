@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 import requests
 from .models import City
-from .forms import Userregistarions, CityForm
+from .forms import Userregistarions, CityForm, ChoiseCity
 
 @login_required
 def index(request):
@@ -13,7 +13,7 @@ def index(request):
 
     cities = City.objects.all()
 
-    form = CityForm
+    form = ChoiseCity
 
     if request.method == 'POST':  # only true if form is submitted
         form = CityForm(request.POST)  # add actual request data to form for processing
@@ -25,6 +25,8 @@ def index(request):
         city_weather = requests.get(
             url.format(city)).json()  # request the API data and convert the JSON to Python data types
 
+
+
         weather = {
             'city': city,
             'temperature': city_weather['main']['temp'],
@@ -34,7 +36,7 @@ def index(request):
 
         weather_data.append(weather)
 
-    context = {'weather': weather_data}
+    context = {'weather': weather_data, 'form': form}
 
     return render(request, 'user/index.html', context)
 
